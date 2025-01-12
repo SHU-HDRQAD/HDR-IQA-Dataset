@@ -12,3 +12,6 @@ We design an end-to-end network for HDR IQA, which consists of a DRL module and 
 <p align="center">
   Fig.2 Framework of the proposed network.
 </p>
+
+## Usages
+### Testing a single HDR image
