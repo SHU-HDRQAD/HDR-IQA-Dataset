@@ -1,5 +1,4 @@
 import os
-import openpyxl
 import torch
 import torchvision
 # import MANIQA_models.maniqa as models
@@ -15,7 +14,6 @@ from utils.algorithm import HDRPU21
 import random
 import cv2
 from collections import OrderedDict
-import time
 
 class QuadSplitTransform:
     def __init__(self, patch_size):
