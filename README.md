@@ -15,3 +15,7 @@ We design an end-to-end network for HDR IQA, which consists of a DRL module and 
 
 ## Usages
 ### Testing a single HDR image
+Predicting HDR image quality with our model trained on the HDRQAD.
+To run the demo, please download the pre-trained model at [Baidu cloud](https://www.baidu.com) (password: 1ty8), put it in 'pretrained' folder, then run:
+```python
+python demo.py
