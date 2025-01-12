@@ -4,33 +4,11 @@ from efficientnet_pytorch import EfficientNet
 from timm.models.vision_transformer import Block
 from torch import nn
 from einops import rearrange
-from collections import OrderedDict
-def get_all_model_devices(model):
-    devices = []
-    for mdl in model.state_dict().values():
-        if mdl.device not in devices:
-            devices.append(mdl.device)
-    return devices
-
-
-def load_checkpoint(my_model, path):
-    load_net = torch.load(path, map_location=get_all_model_devices(my_model)[0])
-    if 'state_dict' in load_net.keys():
-        load_net = load_net['state_dict']
-    load_net_clean = OrderedDict()  # remove unnecessary 'module.'
-    for k, v in load_net.items():
-        if k.startswith('module.'):
-            load_net_clean[k[7:]] = v
-        else:
-            load_net_clean[k] = v
-    my_model.load_state_dict(load_net_clean)
 
 class attn(nn.Module):
     def __init__(self, channel, reduction=4, bias=True):
         super(attn, self).__init__()
-        # global average pooling: feature --> point
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
-        # feature channel downscale and upscale --> channel weight
         self.conv_ca = nn.Sequential(
                 nn.Conv2d(channel, channel // reduction, 1, padding=0, bias=bias),
                 nn.SiLU(inplace=True),
@@ -191,49 +169,6 @@ class patches_fusion_module(nn.Module):
         out = self.conv(torch.cat([x1_, x2_], dim=1))
         return out
 
-class linear_enhance(nn.Module):
-    def __init__(self, inchannel, outchannel):
-        super(linear_enhance, self).__init__()
-        # self.cbam = CBAM(gate_channels=outchannel)
-        self.conv1_1 = nn.Conv2d(in_channels=inchannel, out_channels=outchannel, kernel_size=1, stride=1, padding=0)
-        self.conv1_2 = nn.Conv2d(in_channels=outchannel * 3, out_channels=outchannel, kernel_size=1, stride=1, padding=0)
-        self.conv3_1 = nn.Conv2d(in_channels=inchannel, out_channels=outchannel, kernel_size=3, stride=1, padding=1)
-        self.conv3_2 = nn.Conv2d(in_channels=inchannel, out_channels=outchannel, kernel_size=3, stride=1, padding=1)
-        self.conv3_3 = nn.Conv2d(in_channels=outchannel, out_channels=outchannel, kernel_size=3, stride=1, padding=1)
-        self.prelu = nn.PReLU()
-        self.bn = nn.BatchNorm2d(outchannel)
-
-    def forward(self, x):
-        x1 = self.conv1_1(x)
-        # print('x1', x1.size())#[16, 24, 28, 28]
-        x2 = self.conv3_1(x)
-        # print('x2', x2.size())#[16, 24, 28, 28]
-        x3 = self.conv3_2(x) + x1
-        # print('x3', x3.size())#[16, 24, 28, 28]
-        x3 = self.conv3_3(x3) + x2
-        # print('x3', x3.size())#[16, 24, 28, 28]
-        x = torch.cat((x1, x2, x3), 1)
-        # print('x', x.size())#
-        x = self.prelu(self.bn(self.conv1_2(x)))
-        return x
-
-
-class PixelCondition_PositionCoding(nn.Module):
-    def __init__(self, inplane, outplane, embed_dim):
-        super(PixelCondition_PositionCoding, self).__init__()
-        self.PixelCondition = nn.Sequential(
-            nn.Conv2d(inplane, 16, 4, 4,0),
-            nn.SiLU(inplace=True),
-            nn.Conv2d(16, outplane, 4, 4, 0),
-            nn.SiLU(inplace=True),
-        )
-        self.PositionCoding = nn.Parameter(torch.zeros(1, 1, embed_dim))
-    def forward(self, x):
-        PixelCondition = self.PixelCondition(x)
-        PixelCondition = rearrange(PixelCondition, 'b c h w -> b (h w) c', h=14, w=14) # B, 196, 3
-        PositionCoding = self.PositionCoding.expand(PixelCondition.size(0), -1, -1) # B, 1, 768
-        return PixelCondition, PositionCoding
-
 
 class SaveOutput:
     def __init__(self):
@@ -278,8 +213,7 @@ class MANIQA(nn.Module):
             nn.Linear(500, 1),
             nn.Sigmoid()
         )
-        load_checkpoint(mymodel, '/public/zzh/MANIQA my patch/parameter/Efficient_base/efficient_linear_base256_0.8406.pth')
-        # load_checkpoint(mymodel, '/public/zzh/MANIQA my patch/parameter/Efficient_base/efficient_linear_base_0.8486.pth')
+        # load_checkpoint(mymodel, '/public/zzh/MANIQA my patch/parameter/Efficient_base/efficient_linear_base256_0.8406.pth')
         mymodel.eval()
         features_linear = list(mymodel.children())
         self.model_layers_linear = nn.Sequential(*features_linear)
@@ -369,25 +303,6 @@ class MANIQA(nn.Module):
                         x = model(x)
                     else:
                         x = model(x)
-        # for i, model in enumerate(self.model_layers_linear):
-        #     if i == 2:
-        #         for j, block in enumerate(model):
-        #             x = block(x)
-        #             if j == 2:
-        #                 f_linear.append(x)  # j = 2, 4, 10,15
-        #             if j == 4:
-        #                 f_linear.append(x)
-        #             if j == 10:
-        #                 f_linear.append(x)
-        #     elif i == 4:
-        #         x = model(x)
-        #         f_linear.append(x)
-        #     else:
-        #         if i == 7:
-        #             x = x.view(x.size(0), -1)
-        #             x = model(x)
-        #         else:
-        #             x = model(x)
         f_linear[0] = self.conv_pool1(f_linear[0])
         f_linear[1] = self.conv_pool2(f_linear[1])
         f_linear[2] = self.conv_poo3(f_linear[2])
@@ -458,10 +373,3 @@ class MANIQA(nn.Module):
             score = torch.cat((score, _s.unsqueeze(0)), 0)
 
         return score
-
-# from torchsummary import summary
-# net = MANIQA(embed_dim=768).cuda('cuda:0')
-# summary(net, ((12, 224, 224), (12, 224, 224)))
-# a = torch.randn((1, 12, 224, 224)).cuda('cuda:0')
-# out = net(a, a)
-# print(out.size())
