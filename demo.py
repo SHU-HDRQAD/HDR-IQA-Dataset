@@ -1,10 +1,8 @@
 import os
 import torch
 import torchvision
-# import MANIQA_models.maniqa as models
 import model.HDRIQA_model as models
 import numpy as np
-# from torchsummary import summary
 import utils.image_io as iio
 import pandas as pd
 from tqdm import tqdm
