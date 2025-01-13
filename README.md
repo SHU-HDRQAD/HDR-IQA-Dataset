@@ -1,5 +1,4 @@
-# HDR-IQA
-These are the sources dataset and code for the paper "Perceptual Quality Assessment of High Dynamic Range Image: A Benchmark Dataset and A No Reference Method".
+# Perceptual Quality Assessment of High Dynamic Range Image: A Benchmark Dataset and A No Reference Method
 ## Dataset
 We embark on a groundbreaking endeavor to create the HDRQAD for developing a high-quality metrics for HDR IQA. A total of 1,409 distorted HDR images acquired through three imaging schemes, enabling HDRQAD characterized by a high diversity of real distortion types (6 categories) and content (147 scenes). The dataset is uploaded to Baidu Cloud, and the link at [this](https://www.baidu.com).
 
