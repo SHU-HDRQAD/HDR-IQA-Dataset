@@ -86,7 +86,6 @@ load_checkpoint(model_HDRIQA, opt.model_path)
 transforms = QuadSplitTransform(patch_size=224)
 im_path = opt.image_path
 
-
 img_ = iio.load_HDR(opt.image_path)
 img_ = torch.tensor(np.transpose(img_, [2, 0, 1]).astype(np.float32))
 
