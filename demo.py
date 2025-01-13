@@ -70,7 +70,7 @@ def pil_loader(path):
 
 parser = argparse.ArgumentParser()
 arg = parser.add_argument
-arg('--image_path', type=str, default='./HDRImage/sample.exr', help='Image path')
+arg('--image_path', type=str, default='./HDRImage/over_exposure_CadesCove_level_1.exr', help='Image path')
 arg('--model_path', type=str, default='./parameter/pu21_for_paper_3/pu21_for_paper_3_train_on_CrossUPIQ_0.7525.pth', help='load model')
 arg('--device', type=str, default='cuda:0', help='use cuda')
 arg('--patches', type=int, default=20, help='crop patches num')
