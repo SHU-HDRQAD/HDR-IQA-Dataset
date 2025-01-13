@@ -82,16 +82,16 @@ opt = parser.parse_args()
 model_HDRIQA = models.MANIQA().cuda(opt.device)
 model_HDRIQA.train(False)
 
-# load_checkpoint(model_HDRIQA, opt.model_path)
 load_checkpoint(model_HDRIQA, opt.model_path)
 transforms = QuadSplitTransform(patch_size=224)
 im_path = opt.image_path
 
-# random crop 20 patches and calculate mean quality score
+
 img_ = iio.load_HDR(opt.image_path)
 img_ = torch.tensor(np.transpose(img_, [2, 0, 1]).astype(np.float32))
 
 pu21 = HDRPU21()
+# random crop 20 patches and calculate mean quality score
 for i in range(opt.patches):
     img = transforms(img_)
     img_pu = pu21.encode(img * 10000)
