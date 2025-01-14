@@ -92,7 +92,7 @@ pu21 = HDRPU21()
 for i in range(opt.patches):
     img = transforms(img_)
     img_pu = pu21.encode(img * 10000)
-    img_pu = (img_pu + 1e-3) / (595.39 + 1e-3)
+    img_pu = img_pu / (595.39 + 1e-3)
     with torch.no_grad():
         pred = model_HDRIQA(img_pu.unsqueeze(0).cuda(opt.device), img.unsqueeze(0).cuda(
             opt.device))
