@@ -91,6 +91,6 @@ for i in range(opt.patches):
             opt.device))
     pred_scores.append(float(pred.item()))
 score = np.mean(pred_scores)
-print('pre:%.4f' % (score))
+print('pre:%.4f' % (score * 5.0))
 
 
