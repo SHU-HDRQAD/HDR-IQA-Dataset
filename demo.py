@@ -61,13 +61,6 @@ def load_checkpoint(my_model, path):
     my_model.load_state_dict(load_net_clean)
 
 
-
-def pil_loader(path):
-    with open(path, 'rb') as f:
-        img = Image.open(f)
-        return img.convert('RGB')
-
-
 parser = argparse.ArgumentParser()
 arg = parser.add_argument
 arg('--image_path', type=str, default='./HDRImage/over_exposure_CadesCove_level_1.exr', help='Image path')
