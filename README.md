@@ -15,7 +15,7 @@ We design an end-to-end network for HDR IQA, which consists of a DRL module and 
 ## Usages
 ### Testing a single HDR image
 Predicting HDR image quality with our model trained on the HDRQAD.
-To run the demo, please download the pre-trained model at [Google Drive](https://pan.baidu.com/s/1zkz_2iQz1PXWTpFrM2xeaA) (password: acep), put it in 'pretrained' folder, then run:
+To run the demo, please download the pre-trained model at [Google Drive](https://drive.google.com/file/d/1nTjwVU8Bbkvj9rauL7RRu1mfZPiWEa1h/view?usp=drive_link), put it in 'pretrained' folder, then run:
 ```python
 python demo.py
 ```
