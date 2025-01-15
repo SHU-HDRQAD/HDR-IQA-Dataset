@@ -20,6 +20,6 @@ To run the demo, please download the pre-trained model at [Google Drive](https:/
 python demo.py
 ```
 ### Training & Testing on HDR IQA databases
-The training code will be made publicly available within one month after acceptance.
+The training code will be made publicly available within two months after acceptance.
 
 
