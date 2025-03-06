@@ -181,7 +181,7 @@ class SaveOutput:
         self.outputs = []
 
 
-class MANIQA(nn.Module):
+class HDRIQA(nn.Module):
     def __init__(self, embed_dim=768, num_outputs=1, drop=0.1):
         super().__init__()
         self.vit = timm.create_model('vit_base_patch16_224', pretrained=True)
