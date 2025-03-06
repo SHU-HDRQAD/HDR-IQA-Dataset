@@ -70,7 +70,7 @@ arg('--patches', type=int, default=20, help='crop patches num')
 opt = parser.parse_args()
 
 #
-model_HDRIQA = models.MANIQA().cuda(opt.device)
+model_HDRIQA = models.HDRIQA().cuda(opt.device)
 model_HDRIQA.train(False)
 
 load_checkpoint(model_HDRIQA, opt.model_path)
