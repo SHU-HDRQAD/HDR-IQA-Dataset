@@ -22,4 +22,19 @@ python demo.py
 ### Training & Testing on HDR IQA databases
 The training code will be made publicly available within two months after acceptance.
 
+##Cite
+If you use our dataset or algorithm in your research, please cite our paper as follows:
+
+@ARTICLE{10884859,
+  author={Zhou, Zihao and Shen, Liquan and Lei, Jun and Tian, Zhaoyi and Hu, Xiangyu and Wang, Shiwei and Chen, Yang},
+  journal={IEEE Transactions on Circuits and Systems for Video Technology}, 
+  title={Perceptual Quality Assessment of High-Dynamic-Range Image: A Benchmark Dataset and a No Reference Method}, 
+  year={2025},
+  volume={35},
+  number={7},
+  pages={6640-6655},
+  keywords={Nonlinear distortion;Imaging;Visualization;Prediction algorithms;Image quality;Image coding;Image reconstruction;Quality assessment;Data mining;Cameras;High dynamic range (HDR);deep learning;no reference;image quality assessment},
+  doi={10.1109/TCSVT.2025.3541772}}
+
+
 
