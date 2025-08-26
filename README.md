@@ -25,6 +25,7 @@ The training code will be made publicly available within two months after accept
 ##Cite
 If you use our dataset or algorithm in your research, please cite our paper as follows:
 
+```bibtex
 @ARTICLE{10884859,
   author={Zhou, Zihao and Shen, Liquan and Lei, Jun and Tian, Zhaoyi and Hu, Xiangyu and Wang, Shiwei and Chen, Yang},
   journal={IEEE Transactions on Circuits and Systems for Video Technology}, 
